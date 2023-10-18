@@ -50,3 +50,10 @@ The NS Group wants new software to track the rental of their bicycles. The softw
 |                                                             | Electrical: kilometer * 0.5               |
 | The customer pay per hour                                   | hour * 2                                  |
 
+Additional info
+
+calculateRentalPrice()
+
+returnBicycle()
+
+getDistance()
