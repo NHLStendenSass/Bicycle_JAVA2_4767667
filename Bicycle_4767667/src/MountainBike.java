@@ -1,27 +1,21 @@
-public class MountainBike implements Bicycle
-{
-    private static final double DEPOSIT = 20;
-    private static final double PRICE_PER_KM = 0.25;
-    private static final double PRICE_PER_HOUR = 2;
-    private double distance;
-    private String bikeId;
+class MountainBike extends Bicycle {
 
-    public MountainBike(String bikeId) {
-        this.bikeId = bikeId;
+    public MountainBike(String type) {
+        super(type);
     }
 
     @Override
-    public double getDistance() {
-        return 0;
+    public double calculateTotalPayment(double distance, double hours) {
+        return (distance * 0.25 + hours * 2) - 20;
     }
 
     @Override
-    public double calculateRentalPrice(double time, double kilometer) {
-        return 0;
+    public boolean hasCustomerPaid() {
+        return false; // Implement your own logic here
     }
 
     @Override
-    public void returnBicycle(double time, double kilometer) {
-
+    public void setCustomerPaid(boolean paid) {
+        // Implement your own logic here
     }
 }
