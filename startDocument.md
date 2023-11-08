@@ -41,51 +41,94 @@ Calculations:
 4. ElectricalBike
 5. Rent
 
-### Input & Output
+- ### Input & Output
 
-In this section, the input and output of the application will be described.
+  In this section, the input and output of the application will be described.
 
-#### Input
+  #### Input
 
-In the table below, all the necessary inputs are described:
+  In the table below all the input (that the user has to input in order to make the application work) are described.
 
-| Case             | Type                          | Conditions |
-| ---------------- | ----------------------------- | ---------- |
-| Customer details | `String`                      | not empty  |
-| Rental details   | `String`, `Bicycle`           | not empty  |
-| Return details   | `String`, `Bicycle`, `double` | not empty  |
-| Payment details  | `Bicycle`, `double`, `double` | not empty  |
+  | Case              | Type     | Conditions   |
+  | ----------------- | -------- | ------------ |
+  | Bicycle bicycle   | Object   | not empty    |
+  | Start time        | `String` | not empty    |
+  | End time          | `String` | not empty    |
+  | Distance traveled | `double` | `number` > 0 |
 
-#### Output
+  #### Output
 
-| Case                    | Type               |
-| ----------------------- | ------------------ |
-| Available bicycles      | `HashSet<Bicycle>` |
-| Rental status           | `String`           |
-| Return status           | `String`           |
-| Customer payment status | `String`           |
-| Total payment           | `double`           |
+  | Case                 | Type               |
+  | -------------------- | ------------------ |
+  | Bicycle availability | `HashSet<Bicycle>` |
+  | Rent status          | `String`           |
+  | Return status        | `String`           |
+  | Payment status       | `String`           |
+  | Total distance       | `double`           |
 
-#### Calculations
+  #### Calculations
 
-| Case          | Calculation                                                  |
-| ------------- | ------------------------------------------------------------ |
-| Total payment | Distance multiplied by the bicycle price and hours, minus the deposit. |
+  | Case           | Calculation                                         |
+  | -------------- | --------------------------------------------------- |
+  | Total distance | The sum of all the distances traveled by a bicycle. |
 
-#### Remarks
+  #### Remarks
 
-- Input will be validated.
-- Only the Main class will contain `System.out.println`.
-- Unit Tests will be provided.
+  - Input will be validated.
+  - Only the Main class will contain `System.out.println`.
+  - Unit Tests will be provided.
 
 ## UML:
 
 ![](uml.png)
 
-Additional info
+## Testplan
 
-calculateRentalPrice()
+In this section, the test cases will be described to test the application.
 
-returnBicycle()
+### Test Cases
 
-getDistance()
+In this section, the test cases will be described. Every test case should be executed with the test data as a starting point.
+
+#### #1 Rental and Return of Regular Bicycle
+
+Verifying the functionality of renting and returning a regular bicycle.
+
+| Step | Input  | Action                                      | Expected output               |
+| ---- | ------ | ------------------------------------------- | ----------------------------- |
+| 1    | `rent` | `rentBicycle("10:00", regularBike)`         | Bicycle is available for rent |
+| 2    | `rent` | `returnBicycle("12:00", 10.0, regularBike)` | Bicycle is returned           |
+
+#### #2 Rental and Return of Electrical Bicycle
+
+Verifying the functionality of renting and returning an electrical bicycle.
+
+| Step | Input  | Action                                         | Expected output               |
+| ---- | ------ | ---------------------------------------------- | ----------------------------- |
+| 1    | `rent` | `rentBicycle("10:00", electricalBike)`         | Bicycle is available for rent |
+| 2    | `rent` | `returnBicycle("12:00", 10.0, electricalBike)` | Bicycle is returned           |
+
+#### #3 Check Rental Payment Status
+
+Verifying the payment status after the rental.
+
+| Step | Input  | Action                           | Expected output                          |
+| ---- | ------ | -------------------------------- | ---------------------------------------- |
+| 1    | `rent` | `pay(regularBike, 15.0, 2.5)`    | The total amount to be paid is: [amount] |
+| 2    | `rent` | `pay(electricalBike, 15.0, 2.5)` | The total amount to be paid is: [amount] |
+
+#### #4 Display Available Bicycles
+
+Testing the method to display available bicycles after rentals.
+
+| Step | Input  | Action                | Expected output                       |
+| ---- | ------ | --------------------- | ------------------------------------- |
+| 1    | `rent` | `availableBicycles()` | HashSet containing available bicycles |
+
+#### #5 Display Total Distance of Bicycles
+
+Testing the method to display the total distance traveled by each bicycle.
+
+| Step | Input  | Action                   | Expected output             |
+| ---- | ------ | ------------------------ | --------------------------- |
+| 1    | `rent` | `displayTotalDistance()` | Total distances of bicycles |
