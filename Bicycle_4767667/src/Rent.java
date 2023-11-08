@@ -1,8 +1,9 @@
-import java.util.HashMap;
 import java.util.HashSet;
 
-class Rent implements RentalSystem
-{
+/**
+ * Class representing the rental system.
+ */
+class Rent implements RentalSystem {
     private HashSet<Bicycle> bicycles;
     private double deposit;
     private double regularPrice;
@@ -11,6 +12,9 @@ class Rent implements RentalSystem
     private double hourPrice;
     private boolean customerPaid;
 
+    /**
+     * Constructor for the Rent class.
+     */
     public Rent() {
         this.bicycles = new HashSet<>();
         this.deposit = 20;
@@ -21,67 +25,133 @@ class Rent implements RentalSystem
         this.customerPaid = false;
     }
 
+    /**
+     * Get the set of available bicycles.
+     *
+     * @return The set of available bicycles.
+     */
     public HashSet<Bicycle> availableBicycles() {
         return bicycles;
     }
 
-    public void rentBicycle(String startTime, Bicycle bicycle) {
+    /**
+     * Add a bicycle to the rental system.
+     *
+     * @param bicycle The bicycle to be added.
+     */
+    public void addBicycle(Bicycle bicycle) {
+        bicycles.add(bicycle);
+    }
+
+    /**
+     * Rent a bicycle.
+     *
+     * @param startTime The start time of the rental.
+     * @param bicycle   The bicycle to be rented.
+     * @return The rental status message.
+     */
+    public String rentBicycle(String startTime, Bicycle bicycle) {
         if (bicycles.contains(bicycle)) {
-            System.out.println("Bicycle is available for rent");
-            // Add rental logic here
+            bicycle.setCustomerPaid(false); // Reset customerPaid status
+            return "Bicycle is available for rent";
         } else {
-            System.out.println("Bicycle is not available for rent");
+            return "Bicycle is not available for rent";
         }
     }
 
-    public void returnBicycle(String endTime, double kilometer, Bicycle bicycle) {
+    /**
+     * Return a rented bicycle.
+     *
+     * @param endTime    The end time of the rental.
+     * @param kilometer  The distance traveled during the rental period.
+     * @param bicycle    The bicycle to be returned.
+     * @return The return status message.
+     */
+    public String returnBicycle(String endTime, double kilometer, Bicycle bicycle) {
         if (bicycles.contains(bicycle)) {
-            System.out.println("Bicycle is returned");
-            // Add return logic here
+            bicycle.setCustomerPaid(true); // Set customerPaid to true upon return
+            double totalDistance = bicycle.getDistance() + kilometer; // Calculate total distance
+            bicycle.addDistance(kilometer); // Add the distance traveled
+            return "Bicycle is returned. Total distance for this ride: " + totalDistance + " km.";
         } else {
-            System.out.println("Invalid bicycle return");
+            return "Invalid bicycle return";
         }
     }
 
+    /**
+     * Check if the customer has paid for a bicycle.
+     *
+     * @param bicycle The bicycle to be checked for payment status.
+     * @return The payment status message.
+     */
     @Override
-    public void checkCustomerPaid(Bicycle bicycle) {
-        System.out.println("Checking if the customer has paid for " + bicycle.getType());
-        if (bicycle.hasCustomerPaid()) {
-            System.out.println("Customer has paid.");
-        } else {
-            System.out.println("Customer has not paid yet.");
-        }
+    public String checkCustomerPaid(Bicycle bicycle) {
+        return "Checking if the customer has paid for " + bicycle.getType() +
+                "\n" + (bicycle.hasCustomerPaid() ? "Customer has paid." : "Customer has not paid yet.");
     }
 
-
-    public void checkCustomerPaid() {
+    /**
+     * Check if the customer has paid for any bicycle.
+     *
+     * @return The payment status message.
+     */
+    public String checkCustomerPaid() {
         // Add logic to check if the customer has paid after returning the bicycle
-        if (customerPaid) {
-            System.out.println("Customer has paid.");
-        } else {
-            System.out.println("Customer has not paid yet.");
-        }
+        return customerPaid ? "Customer has paid." : "Customer has not paid yet.";
     }
 
-    public void pay(Bicycle bicycle, double distance, double hours) {
+    /**
+     * Make a payment for a rented bicycle.
+     *
+     * @param bicycle  The bicycle for which the payment is being made.
+     * @param distance The distance traveled with the bicycle.
+     * @param hours    The duration for which the bicycle was rented.
+     * @return The payment status message.
+     */
+    public String pay(Bicycle bicycle, double distance, double hours) {
         // Add payment logic here
-        double totalAmount = (distance * getBicyclePrice() + hours * hourPrice) - deposit;
+        double totalAmount = (distance * getBicyclePrice(bicycle.getType()) + hours * hourPrice) - deposit;
         if (totalAmount > 0) {
-            System.out.println("The total amount to be paid is: " + totalAmount);
             customerPaid = true;
+            return "The total amount to be paid is: " + totalAmount;
         } else {
-            System.out.println("No additional payment needed. Deposit covers the costs.");
             customerPaid = true;
+            return "No additional payment needed. Deposit covers the costs.";
         }
     }
 
-    private double getBicyclePrice() {
-        if (regularPrice > mountainPrice && regularPrice > electricalPrice) {
+    private double getBicyclePrice(BicycleType type) {
+        if (type == BicycleType.REGULAR) {
             return regularPrice;
-        } else if (mountainPrice > regularPrice && mountainPrice > electricalPrice) {
+        } else if (type == BicycleType.MOUNTAIN) {
             return mountainPrice;
         } else {
             return electricalPrice;
         }
+    }
+
+    public String displayTotalDistance() {
+        for (Bicycle bicycle : bicycles) {
+            return "Bicycle type: " + bicycle.getType() + " Total Distance: " + bicycle.getDistance() + " km";
+        }
+        return null;
+    }
+
+    /**
+     * Returns a string representation of the Rent object.
+     *
+     * @return A string representation of the Rent object.
+     */
+    @Override
+    public String toString() {
+        return "Rent{" +
+                "bicycles=" + bicycles +
+                ", deposit=" + deposit +
+                ", regularPrice=" + regularPrice +
+                ", mountainPrice=" + mountainPrice +
+                ", electricalPrice=" + electricalPrice +
+                ", hourPrice=" + hourPrice +
+                ", customerPaid=" + customerPaid +
+                '}';
     }
 }
