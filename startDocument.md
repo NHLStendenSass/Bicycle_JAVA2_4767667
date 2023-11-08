@@ -1,4 +1,9 @@
 # StartDocoument
+* Subject: Java 2.
+* Student name: Sander Siimann.
+* Student ID: 4767667.
+* Date: 23/24.
+* Period: 1.
 
 ## Description:
 
